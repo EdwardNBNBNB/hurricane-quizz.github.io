@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hurricane Safety Quiz Game</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+    #game-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .heart-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .heart {
+      width: 40px;
+      margin: 0 5px;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Hurricane Safety Quiz</h1>
+    <div class="heart-container" id="heart-container">
+      <!-- Heart icons will load here -->
+    </div>
+    <p id="story">Siddhārtha Gautama is upset because countries are fighting with each other. To teach everyone a lesson about peace, he has created the biggest hurricane ever in the Atlantic Ocean! Your mission is to survive by answering questions about hurricane safety.</p>
+    <p id="question">Press Start to begin!</p>
+    <div id="choices"></div>
+    <button id="start-button">Start</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the safest place to stay during a hurricane?",
+        choices: ["In a basement", "Near a window", "In an open field", "On the roof"],
+        answer: 0,
+      },
+      // Add more questions as needed
+    ];
+
+    let currentQuestionIndex = 0;
+    let lives = 5;
+    const maxLives = 5;
+
+    const questionElement = document.getElementById("question");
+    const choicesContainer = document.getElementById("choices");
+    const heartContainer = document.getElementById("heart-container");
+    const startButton = document.getElementById("start-button");
+
+    // Function to display hearts
+    function updateHearts() {
+      heartContainer.innerHTML = "";
+      for (let i = 0; i < lives; i++) {
+        const heartImg = document.createElement("img");
+        heartImg.src = "YOUR_IMAGE_URL_HERE"; // Replace with the correct path to your heart PNG
+        heartImg.alt = "Heart";
+        heartImg.className = "heart";
+        heartContainer.appendChild(heartImg);
+      }
+    }
+
+    function startGame() {
+      currentQuestionIndex = 0;
+      lives = maxLives;
+      updateHearts();
+      startButton.style.display = "none";
+      showQuestion();
+    }
+
+    function showQuestion() {
+      if (currentQuestionIndex >= questions.length) {
+        endGame(true);
+        return;
+      }
+
+      const currentQuestion = questions[currentQuestionIndex];
+      questionElement.textContent = currentQuestion.question;
+      choicesContainer.innerHTML = "";
+
+      currentQuestion.choices.forEach((choice, index) => {
+        const button = document.createElement("button");
+        button.textContent = choice;
+        button.onclick = () => checkAnswer(index);
+        choicesContainer.appendChild(button);
+      });
+    }
+
+    function checkAnswer(selectedIndex) {
+      const correctIndex = questions[currentQuestionIndex].answer;
+
+      if (selectedIndex === correctIndex) {
+        currentQuestionIndex++;
+        showQuestion();
+      } else {
+        lives--;
+        updateHearts();
+        if (lives <= 0) {
+          endGame(false);
+        } else {
+          alert("Incorrect! Try again.");
+        }
+      }
+    }
+
+    function endGame(won) {
+      if (won) {
+        questionElement.textContent = "Congratulations! You survived the hurricane and learned how to stay safe.";
+      } else {
+        questionElement.textContent = "Game Over! Siddhārtha Gautama's lesson was too harsh. Stay safe next time!";
+      }
+      choicesContainer.innerHTML = "";
+      startButton.style.display = "block";
+      startButton.textContent = "Play Again";
+    }
+
+    startButton.addEventListener("click", startGame);
+  </script>
+</body>
+</html>
