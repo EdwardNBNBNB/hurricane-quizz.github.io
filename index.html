@@ -46,9 +46,7 @@
 <body>
   <div id="game-container">
     <h1>Hurricane Safety Quiz</h1>
-    <div class="heart-container" id="heart-container">
-      <!-- Heart icons will load here -->
-    </div>
+    <div class="heart-container" id="heart-container"></div>
     <p id="story">Siddhārtha Gautama is upset because countries are fighting with each other. To teach everyone a lesson about peace, he has created the biggest hurricane ever in the Atlantic Ocean! Your mission is to survive by answering questions about hurricane safety.</p>
     <p id="question">Press Start to begin!</p>
     <div id="choices"></div>
@@ -56,25 +54,27 @@
   </div>
 
   <script>
-    const questions = [
-      {
-        question: "What is the safest place to stay during a hurricane?",
-        choices: ["In a basement", "Near a window", "In an open field", "On the roof"],
-        answer: 0,
-      },
-      // Add more questions as needed
+    const allQuestions = [
+      // Add 100 questions here
+      { question: "What is the safest place to stay during a hurricane?", choices: ["In a basement", "Near a window", "In an open field", "On the roof"], answer: 0 },
+      { question: "What should you pack in an emergency kit?", choices: ["Candy and toys", "Water, flashlight, and first aid kit", "Television", "Heavy furniture"], answer: 1 },
+      { question: "When should you evacuate during a hurricane?", choices: ["When told by authorities", "When it starts raining", "When the wind blows hard", "Never"], answer: 0 },
+      { question: "What should you avoid during a hurricane?", choices: ["Staying indoors", "Using candles", "Playing video games", "Boarding up windows"], answer: 1 },
+      { question: "Why is it important to listen to weather warnings?", choices: ["To stay informed", "To see if school is canceled", "To play in the rain", "To get scared"], answer: 0 },
+      // Add 95 more questions following the same format
     ];
 
+    let currentQuestions = [];
     let currentQuestionIndex = 0;
     let lives = 5;
     const maxLives = 5;
+    const questionsPerSession = 20;
 
     const questionElement = document.getElementById("question");
     const choicesContainer = document.getElementById("choices");
     const heartContainer = document.getElementById("heart-container");
     const startButton = document.getElementById("start-button");
 
-    // Function to display hearts
     function updateHearts() {
       heartContainer.innerHTML = "";
       for (let i = 0; i < lives; i++) {
@@ -87,6 +87,7 @@
     }
 
     function startGame() {
+      currentQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, questionsPerSession);
       currentQuestionIndex = 0;
       lives = maxLives;
       updateHearts();
@@ -95,12 +96,12 @@
     }
 
     function showQuestion() {
-      if (currentQuestionIndex >= questions.length) {
+      if (currentQuestionIndex >= currentQuestions.length) {
         endGame(true);
         return;
       }
 
-      const currentQuestion = questions[currentQuestionIndex];
+      const currentQuestion = currentQuestions[currentQuestionIndex];
       questionElement.textContent = currentQuestion.question;
       choicesContainer.innerHTML = "";
 
@@ -113,7 +114,7 @@
     }
 
     function checkAnswer(selectedIndex) {
-      const correctIndex = questions[currentQuestionIndex].answer;
+      const correctIndex = currentQuestions[currentQuestionIndex].answer;
 
       if (selectedIndex === correctIndex) {
         currentQuestionIndex++;
@@ -131,9 +132,9 @@
 
     function endGame(won) {
       if (won) {
-        questionElement.textContent = "Congratulations! You survived the hurricane and learned how to stay safe.";
+        questionElement.textContent = "Congratulations! You completed this session. Do you want to try another set of questions?";
       } else {
-        questionElement.textContent = "Game Over! Siddhārtha Gautama's lesson was too harsh. Stay safe next time!";
+        questionElement.textContent = "Game Over! Siddhārtha Gautama's lesson was too harsh. Try another session?";
       }
       choicesContainer.innerHTML = "";
       startButton.style.display = "block";
