@@ -46,7 +46,9 @@
 <body>
   <div id="game-container">
     <h1>Hurricane Safety Quiz</h1>
-    <div class="heart-container" id="heart-container"></div>
+    <div class="heart-container" id="heart-container">
+      <!-- Heart icons will load here -->
+    </div>
     <p id="story">Siddhārtha Gautama is upset because countries are fighting with each other. To teach everyone a lesson about peace, he has created the biggest hurricane ever in the Atlantic Ocean! Your mission is to survive by answering questions about hurricane safety.</p>
     <p id="question">Press Start to begin!</p>
     <div id="choices"></div>
@@ -54,27 +56,115 @@
   </div>
 
   <script>
-    const allQuestions = [
-      // Add 100 questions here
-      { question: "What is the safest place to stay during a hurricane?", choices: ["In a basement", "Near a window", "In an open field", "On the roof"], answer: 0 },
-      { question: "What should you pack in an emergency kit?", choices: ["Candy and toys", "Water, flashlight, and first aid kit", "Television", "Heavy furniture"], answer: 1 },
-      { question: "When should you evacuate during a hurricane?", choices: ["When told by authorities", "When it starts raining", "When the wind blows hard", "Never"], answer: 0 },
-      { question: "What should you avoid during a hurricane?", choices: ["Staying indoors", "Using candles", "Playing video games", "Boarding up windows"], answer: 1 },
-      { question: "Why is it important to listen to weather warnings?", choices: ["To stay informed", "To see if school is canceled", "To play in the rain", "To get scared"], answer: 0 },
-      // Add 95 more questions following the same format
+    const questions = [
+            {
+        question: "What should you pack in an emergency kit?",
+        choices: ["Candy and toys", "Water, flashlight, and first aid kit", "Television", "Heavy furniture"],
+        answer: 1,
+      },
+      {
+        question: "When should you evacuate during a hurricane?",
+        choices: ["When told by authorities", "When it starts raining", "When the wind blows hard", "Never"],
+        answer: 0,
+      },
+      {
+        question: "What should you avoid during a hurricane?",
+        choices: ["Staying indoors", "Using candles", "Playing video games", "Boarding up windows"],
+        answer: 1,
+      },
+      {
+        question: "Why is it important to listen to weather warnings?",
+        choices: ["To stay informed", "To see if school is canceled", "To play in the rain", "To get scared"],
+        answer: 0,
+      },
+      {
+        question: "What does a hurricane watch mean?",
+        choices: ["A hurricane is possible", "A hurricane is happening", "Hurricanes are not dangerous", "The hurricane is over"],
+        answer: 0,
+      },
+      {
+        question: "What is the eye of a hurricane?",
+        choices: ["The strongest part", "The calm center", "Where rain is heaviest", "Where the winds start"],
+        answer: 1,
+      },
+      {
+        question: "What should you do if you're caught outside in a hurricane?",
+        choices: ["Find a ditch or low spot", "Climb a tree", "Run to open ground", "Stay where you are"],
+        answer: 0,
+      },
+      {
+        question: "Why are hurricanes dangerous?",
+        choices: ["They bring strong winds and flooding", "They make the sky dark", "They stop electricity", "They cause rainbows"],
+        answer: 0,
+      },
+      {
+        question: "What is storm surge?",
+        choices: ["High ocean waves", "Rising sea levels caused by a hurricane", "Strong winds", "Rainfall during a storm"],
+        answer: 1,
+      },
+      {
+        question: "What should you do with outdoor furniture before a hurricane?",
+        choices: ["Leave it outside", "Bring it indoors", "Throw it away", "Tie it to a tree"],
+        answer: 1,
+      },
+      {
+        question: "What should you do if your home is in a flood zone?",
+        choices: ["Evacuate immediately", "Stay on the first floor", "Ignore the warnings", "Turn off all lights"],
+        answer: 0,
+      },
+      {
+        question: "What does a hurricane category indicate?",
+        choices: ["Size of the hurricane", "Strength of the winds", "Number of storms", "Rainfall amount"],
+        answer: 1,
+      },
+      {
+        question: "What should you avoid drinking during a hurricane?",
+        choices: ["Bottled water", "Tap water that may be contaminated", "Juice", "Soda"],
+        answer: 1,
+      },
+      {
+        question: "What is the best source of information during a hurricane?",
+        choices: ["Social media", "Official weather channels and authorities", "Your friends", "TV shows"],
+        answer: 1,
+      },
+      {
+        question: "How can you protect windows during a hurricane?",
+        choices: ["Board them up with plywood", "Leave them open", "Cover them with paper", "Spray water on them"],
+        answer: 0,
+      },
+      {
+        question: "What is the main cause of death during hurricanes?",
+        choices: ["Flooding", "Lightning", "Wind", "Falling trees"],
+        answer: 0,
+      },
+      {
+        question: "Why is it important to have a communication plan?",
+        choices: ["To find family if separated", "To order food", "To play games", "To call friends"],
+        answer: 0,
+      },
+      {
+        question: "What should you do if power lines fall near your home?",
+        choices: ["Stay far away and report it", "Touch them carefully", "Drive over them", "Ignore them"],
+        answer: 0,
+      },
+      {
+        question: "What is the most important thing to do after a hurricane?",
+        choices: ["Check for safety hazards", "Go outside immediately", "Start cleaning up", "Celebrate"],
+        answer: 0,
+      },
+      // Add more questions as needed
     ];
 
-    let currentQuestions = [];
     let currentQuestionIndex = 0;
     let lives = 5;
     const maxLives = 5;
-    const questionsPerSession = 20;
 
     const questionElement = document.getElementById("question");
     const choicesContainer = document.getElementById("choices");
     const heartContainer = document.getElementById("heart-container");
     const startButton = document.getElementById("start-button");
 
+    // Function to display hearts
     function updateHearts() {
       heartContainer.innerHTML = "";
       for (let i = 0; i < lives; i++) {
@@ -87,7 +177,6 @@
     }
 
     function startGame() {
-      currentQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, questionsPerSession);
       currentQuestionIndex = 0;
       lives = maxLives;
       updateHearts();
@@ -96,12 +185,12 @@
     }
 
     function showQuestion() {
-      if (currentQuestionIndex >= currentQuestions.length) {
+      if (currentQuestionIndex >= questions.length) {
         endGame(true);
         return;
       }
 
-      const currentQuestion = currentQuestions[currentQuestionIndex];
+      const currentQuestion = questions[currentQuestionIndex];
       questionElement.textContent = currentQuestion.question;
       choicesContainer.innerHTML = "";
 
@@ -114,7 +203,7 @@
     }
 
     function checkAnswer(selectedIndex) {
-      const correctIndex = currentQuestions[currentQuestionIndex].answer;
+      const correctIndex = questions[currentQuestionIndex].answer;
 
       if (selectedIndex === correctIndex) {
         currentQuestionIndex++;
@@ -132,9 +221,9 @@
 
     function endGame(won) {
       if (won) {
-        questionElement.textContent = "Congratulations! You completed this session. Do you want to try another set of questions?";
+        questionElement.textContent = "Congratulations! You survived the hurricane and learned how to stay safe.";
       } else {
-        questionElement.textContent = "Game Over! Siddhārtha Gautama's lesson was too harsh. Try another session?";
+        questionElement.textContent = "Game Over! Siddhārtha Gautama's lesson was too harsh. Stay safe next time!";
       }
       choicesContainer.innerHTML = "";
       startButton.style.display = "block";
